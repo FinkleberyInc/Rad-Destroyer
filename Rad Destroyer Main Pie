@@ -1,0 +1,160 @@
+import pygame
+pygame.init()
+screen = pygame.display.set_mode((400,400))
+pygame.display.set_caption('Rad Destroyer MWAHAHAHA!')
+image = pygame.image.load('New Piskel.png')
+ringstraight1=pygame.image.load('New Piskel-1.png.png')
+ringstraight2=pygame.image.load('New Piskel-2.png.png')
+ringstraight3=pygame.image.load('New Piskel-3.png.png')
+
+#load the 3 images
+
+clock = pygame.time.Clock()
+
+xpos = 200
+ypos = 250
+counter = 10
+framerate = 30
+ticker =0
+xp = 1
+hp=100
+ringdirection=0
+direction = 0 #0 is left, 1 is right, 2 is down, 3 is up
+
+#levels
+backgroundticker = 0
+ringnum=0
+
+ringstraight=0
+ringleft=1
+ringright=2
+#CONSTA\\NTS
+RIGHT = 0
+LEFT = 1
+STRAIGHT = 2
+
+while True: #GAME LOOP
+    clock.tick(framerate)
+#input/output section
+    for event in pygame.event.get() :
+        if event.type == pygame.QUIT :
+            pygame.quit()
+            quit()
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_LEFT]:
+        direction = LEFT
+        xpos-= 4
+        ticker += 1
+        if ticker>5:
+            ticker = 0
+            counter+=1
+        if counter>7: #i have 8 images in my r (first is 0)
+            counter=0   
+    if keys[pygame.K_RIGHT]:
+        direction = RIGHT
+        xpos+=4 
+        ticker+=1
+        if ticker>5:
+            ticker = 0
+            counter +=1
+        if counter>7: #i have 8 images in my row (first is 0)
+            counter =0 
+    if keys[pygame.K_RIGHT] and keys[pygame.K_LEFT]:
+        direction = STRAIGHT
+        ticker+=1
+        if ticker>5:
+            ticker = 0
+            counter +=1
+        if counter>7: #i have 8 images in my row (first is 0)
+            counter =0 
+    if keys[pygame.K_DOWN]:
+        direction = STRAIGHT
+        ypos+= 3
+        ticker += 1
+        if ticker>5:
+            ticker = 0
+            counter+=1
+        if counter>7: #i have 8 images in my row (first is 0)
+            counter = 0        
+    if keys[pygame.K_UP]:
+        direction = STRAIGHT
+        ypos-= 3
+        ticker += 1
+        if ticker>5:
+            ticker = 0
+            counter+=1
+        if counter>7: #i have 8 images in my row (first is 0)
+            counter = 0
+    if keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]:
+      x = 1
+    else:
+      direction = STRAIGHT
+      ticker += 1
+      if ticker>5:
+          ticker = 0
+          counter+=1
+      if counter>7: #i have 8 images in my row (first is 0)
+          counter = 0
+    #level decider
+    if hp==100 and xp==0:
+        rindirection = ringstraight
+    if hp>=0 and xp>=50:
+        rindirection = ringleft
+    if hp==100 and xp>=100:
+        rindirection = ringright
+    
+
+    
+        
+   
+#render section
+    screen.fill((0,0,0))
+    #eventually if statements go here to determine which background to display
+
+    backgroundticker+=1
+    if backgroundticker>15:
+      backgroundticker=0
+      
+      if ringnum==2:
+        ringnum = 0 
+      else:
+        ringnum+=1
+    if ringnum == 0:
+      screen.blit(ringstraight1, (0,0))
+    if ringnum == 1:
+      screen.blit(ringstraight2, (0,0))
+    if ringnum == 2:
+      screen.blit(ringstraight3, (0,0))
+            
+    #increase ticker
+    #if bigger than 10:
+      #reset to 0
+      #if on img1, move to 2
+      #if on 2, move to 3
+      #if on 3, move to 2
+
+
+    #check if rings going straight
+    #if ringdirection == ringstraight:
+      #screen.blit(image, (xpos,ypos), (0,0,32,32))  
+    #check IF you're going right
+    #if ringdirection == ringright:
+      #screen.blit(image, (xpos,ypos), (0,32,32,32))
+    #if ringdirection == ringleft:
+      #screen.blit(image, (xpos,ypos), (0,60,32,32))
+
+
+
+
+    if direction == STRAIGHT:
+      screen.blit(image, (xpos,ypos), (0,0,32,32))  
+    #check IF you're going right
+    if direction == RIGHT:
+      screen.blit(image, (xpos,ypos), (0,32,32,32))
+    if direction == LEFT:
+      screen.blit(image, (xpos,ypos), (0,60,32,32))
+
+    pygame.display.flip() 
+    
+    
